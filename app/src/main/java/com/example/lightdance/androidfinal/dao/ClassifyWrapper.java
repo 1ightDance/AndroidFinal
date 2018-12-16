@@ -13,7 +13,7 @@ public class ClassifyWrapper extends CursorWrapper {
     public Classify getClassify() {
         String id = getString(getColumnIndex(DataBase.ClassifySchema.Field.ID));
         String classifyName = getString(getColumnIndex(DataBase.ClassifySchema.Field.CLASSIFY_NAME));
-        return Classify.builder().id(Integer.valueOf(id)).classifyName(classifyName).builded();
+        return Classify.builder().id(Integer.valueOf(id)).classifyName(classifyName).build();
     }
 
 }

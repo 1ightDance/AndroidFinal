@@ -53,7 +53,7 @@ public class Classify {
             return this;
         }
 
-        public Classify builded() {
+        public Classify build() {
             return classify;
         }
     }

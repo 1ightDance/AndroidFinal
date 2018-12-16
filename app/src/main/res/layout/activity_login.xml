@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".page.login.LoginActivity">
 
     <EditText
         android:id="@+id/account"
@@ -15,7 +15,7 @@
     <EditText
         android:id="@+id/password"
         android:hint="密码"
-        android:password="true"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -23,7 +23,7 @@
     <Button
         android:id="@+id/login"
         android:textStyle="bold"
-        android:text="登陆"
+        android:text="登录"
         app:layout_constraintTop_toBottomOf="@id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
