@@ -31,4 +31,31 @@ public class Classify {
                 ", classifyName='" + classifyName + '\'' +
                 '}';
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Classify classify;
+
+        public Builder() {
+            this.classify = new Classify();
+        }
+
+        public Builder id(int id) {
+            this.classify.id = id;
+            return this;
+        }
+
+        public Builder classifyName(String classifyName) {
+            this.classify.classifyName = classifyName;
+            return this;
+        }
+
+        public Classify builded() {
+            return classify;
+        }
+    }
+
 }
