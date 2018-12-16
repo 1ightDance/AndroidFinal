@@ -73,4 +73,51 @@ public class Note {
                 ", context='" + context + '\'' +
                 '}';
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Note note;
+
+        public Builder() {
+            this.note = new Note();
+        }
+
+        public Builder id(int id) {
+            this.note.id = id;
+            return this;
+        }
+
+        public Builder classifyId(int classifyId) {
+            this.note.classifyId = classifyId;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.note.title = title;
+            return this;
+        }
+
+        public Builder modifyTime(Date modifyTime) {
+            this.note.modifyTime = modifyTime;
+            return this;
+        }
+
+        public Builder location(String location) {
+            this.note.location = location;
+            return this;
+        }
+
+        public Builder context(String context) {
+            this.note.context = context;
+            return this;
+        }
+
+        public Note builded() {
+            return note;
+        }
+    }
+
 }
