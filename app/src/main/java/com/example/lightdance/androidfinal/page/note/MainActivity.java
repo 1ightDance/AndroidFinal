@@ -1,6 +1,5 @@
 package com.example.lightdance.androidfinal.page.note;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -13,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
+import com.example.lightdance.androidfinal.page.note.type.AddTypeDialog;
+import com.example.lightdance.androidfinal.page.note.type.TypeListFragment;
 
 /**
  * @author LightDance

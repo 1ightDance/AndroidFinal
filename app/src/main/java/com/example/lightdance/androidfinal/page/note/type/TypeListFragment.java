@@ -1,9 +1,7 @@
-package com.example.lightdance.androidfinal.page.note;
+package com.example.lightdance.androidfinal.page.note.type;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,10 +16,9 @@ import android.widget.TextView;
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Classify;
 import com.example.lightdance.androidfinal.dao.ClassifyCurd;
+import com.example.lightdance.androidfinal.page.note.MainActivity;
 
 import java.util.List;
-
-import static com.example.lightdance.androidfinal.page.note.MainActivity.REQUEST_NEW_TYPE;
 
 /**
  * @author LightDance
@@ -58,11 +55,6 @@ public class TypeListFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
-    }
     private void updateUI(){
         ClassifyCurd classifyCurd = new ClassifyCurd(getActivity());
         List<Classify> list = classifyCurd.findAllClassify();
@@ -71,6 +63,7 @@ public class TypeListFragment extends Fragment {
             mAdapter = new Adapter(list);
             mRecyclerView.setAdapter(mAdapter);
         }else {
+            mAdapter.setList(list);
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -127,6 +120,16 @@ public class TypeListFragment extends Fragment {
         public int getItemCount() {
             return mList.size();
         }
+
+        /**
+         * 重设adapter的局部变量list,
+         * 配合{@link Adapter#notifyDataSetChanged()}实时更新数据
+         *
+         * @param list 新的数据源
+         */
+        public void setList(List<Classify> list) {
+            mList = list;
+        }
     }
 
     /**
@@ -140,8 +143,7 @@ public class TypeListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == MainActivity.REQUEST_NEW_TYPE) {
-                //TODO 显示不出来？
-                mAdapter.notifyDataSetChanged();
+                updateUI();
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.lightdance.androidfinal.page.note;
+package com.example.lightdance.androidfinal.page.note.type;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Classify;
@@ -41,29 +42,47 @@ public class AddTypeDialog extends DialogFragment {
                 .inflate(R.layout.dialog_new_type, null);
         final EditText editText = v.findViewById(R.id.et_add_new_type);
         final TextView textView = v.findViewById(R.id.tv_new_type_warning);
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+        final AlertDialog mDialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle("新增类别")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+        mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positionButton=mDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button negativeButton=mDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View v) {
+
                         String typename = editText.getText().toString();
+                        //无类型名，显示提示信息，不做处理
                         if ("".equals(typename.trim())){
+                            textView.setVisibility(View.VISIBLE);
+                        }else {
                             ClassifyCurd classifyCurd = new ClassifyCurd(getActivity());
                             Classify classify = Classify.builder()
                                     .id((int)(Math.random()*100))
                                     .classifyName(typename)
                                     .build();
                             classifyCurd.createClassify(classify);
-
+                            dialog.dismiss();
                             sendResult(Activity.RESULT_OK);
-                        }else {
-                            textView.setVisibility(View.VISIBLE);
-                            sendResult(Activity.RESULT_CANCELED);
                         }
                     }
-                }).create();
-        return dialog;
+                });
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "取消", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        return mDialog;
     }
 
     private void sendResult(int resultCode) {
