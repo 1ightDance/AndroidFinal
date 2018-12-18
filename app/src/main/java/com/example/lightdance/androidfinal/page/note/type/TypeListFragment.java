@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +49,7 @@ public class TypeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_type_list, container, false);
         mRecyclerView = v.findViewById(R.id.recycler_view_type_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity() , 2));
 
         updateUI();
         return v;
@@ -71,12 +71,12 @@ public class TypeListFragment extends Fragment {
     /**
      * 用于item绑定布局文件
      */
-    private class TypeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTvClass;
         private Classify mClassify;
 
-        TypeHolder(LayoutInflater inflater, ViewGroup parent) {
+        ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_type, parent, false));
             mTvClass = itemView.findViewById(R.id.tv_item_type_name);
             itemView.setOnClickListener(this);
@@ -96,7 +96,7 @@ public class TypeListFragment extends Fragment {
     /**
      * 适配器，Fragment实际上是通过适配器将数据转化成可见信息的
      */
-    private class Adapter extends RecyclerView.Adapter<TypeHolder> {
+    private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private List<Classify> mList;
 
         public Adapter(List<Classify> list) {
@@ -105,13 +105,13 @@ public class TypeListFragment extends Fragment {
 
         @NonNull
         @Override
-        public TypeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            return new TypeHolder(inflater, parent);
+            return new ViewHolder(inflater, parent);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull TypeHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Classify classify = mList.get(position);
             holder.bind(classify);
         }

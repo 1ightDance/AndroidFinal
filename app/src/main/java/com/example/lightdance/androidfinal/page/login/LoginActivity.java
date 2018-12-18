@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if ("hdu".equals(account.getText().toString()) && "hdu".equals(password.getText().toString())) {
                     startActivity(MainActivity.getIntent(LoginActivity.this));
+                    finish();
                 } else {
                     Toast.makeText(getApplication(), "账户密码错误", Toast.LENGTH_LONG).show();
                 }
