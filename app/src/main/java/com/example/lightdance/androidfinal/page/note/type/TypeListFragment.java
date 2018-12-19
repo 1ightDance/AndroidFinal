@@ -17,6 +17,8 @@ import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Classify;
 import com.example.lightdance.androidfinal.dao.ClassifyCurd;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
+import com.example.lightdance.androidfinal.page.note.NoteListFragment;
+import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.util.List;
 
@@ -50,7 +52,6 @@ public class TypeListFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_type_list, container, false);
         mRecyclerView = v.findViewById(R.id.recycler_view_type_list);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity() , 2));
-
         updateUI();
         return v;
     }
@@ -89,7 +90,8 @@ public class TypeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Snackbar.make(v , getAdapterPosition() + ", 我让人点了", Snackbar.LENGTH_SHORT).show();
+            Fragment noteListFragment = NoteListFragment.newInstance(mAdapter.getClickItem(getAdapterPosition()).getId());
+            ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }
 
@@ -129,6 +131,10 @@ public class TypeListFragment extends Fragment {
          */
         public void setList(List<Classify> list) {
             mList = list;
+        }
+
+        public Classify getClickItem(int position) {
+            return mList.get(position);
         }
     }
 
