@@ -1,8 +1,9 @@
 package com.example.lightdance.androidfinal.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Note {
+public class Note implements Serializable {
 
     private int id;
     private int classifyId;
@@ -10,8 +11,13 @@ public class Note {
     private Date modifyTime;
     private String location;
     private String context;
+    private boolean isNew;
 
-    public Note() {
+    public Note() {}
+
+    public Note(int id, int classifyId) {
+        this.id = id;
+        this.classifyId = classifyId;
     }
 
     public int getId() {
@@ -60,6 +66,14 @@ public class Note {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 
     @Override

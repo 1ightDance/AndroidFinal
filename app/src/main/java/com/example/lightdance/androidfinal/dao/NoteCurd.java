@@ -32,7 +32,7 @@ public class NoteCurd {
         ContentValues values = new ContentValues();
         values.put(DataBase.NoteSchema.Field.CLASSIFY_ID, note.getClassifyId());
         values.put(DataBase.NoteSchema.Field.NOTE_TITLE, note.getTitle());
-        values.put(DataBase.NoteSchema.Field.MODIFY_TIME, note.getModifyTime().toString());
+        values.put(DataBase.NoteSchema.Field.MODIFY_TIME, dateFormat.format(note.getModifyTime()));
         values.put(DataBase.NoteSchema.Field.LOCATION, note.getLocation());
         values.put(DataBase.NoteSchema.Field.CONTEXT, note.getContext());
         return database.insert(DataBase.NoteSchema.TABLE_NAME, null, values);

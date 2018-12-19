@@ -1,11 +1,8 @@
 package com.example.lightdance.androidfinal.page.note;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,9 +25,10 @@ public class NoteListFragment extends Fragment {
     private Adapter mAdapter;
     private RecyclerView mRecyclerView;
 
-    public static NoteListFragment newInstance() {
+    public static NoteListFragment newInstance(int classifyId) {
         NoteListFragment fragment = new NoteListFragment();
         Bundle args = new Bundle();
+        args.putString("classifyId", String.valueOf(classifyId));
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +47,15 @@ public class NoteListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_note_list, container, false);
         mRecyclerView = v.findViewById(R.id.recycler_view_note_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        updateUI();
+        updateUI(getArguments().getString("classifyId"));
         return v;
     }
 
-    private void updateUI() {
+    private void updateUI(String classifyId) {
 
         NoteCurd noteCurd = new NoteCurd(getActivity());
         //TODO set Id
-        List<Note> list = noteCurd.findNoteByClassifyId("");
+        List<Note> list = noteCurd.findNoteByClassifyId(classifyId);
 
         if (mAdapter == null) {
             mAdapter = new Adapter(list);

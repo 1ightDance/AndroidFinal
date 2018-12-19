@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidFinal</string>
+    <string name="app_name">笔记管理</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,4 +15,7 @@
     </string>
 
     <string name="menu_add_type">add new type</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
