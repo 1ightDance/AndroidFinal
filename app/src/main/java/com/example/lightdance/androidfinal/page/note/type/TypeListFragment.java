@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * @author LightDance
- * @update 2018/12/16 22:30
+ * @update 2018/12/21 22:30
  */
 public class TypeListFragment extends Fragment {
 
@@ -91,7 +91,10 @@ public class TypeListFragment extends Fragment {
         public void onClick(View v) {
             Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteFragmentEnum);
             Bundle args = new Bundle();
-            args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
+            //TODO 通过type id获取对应type？或者加在NoteListFragment中
+            args.putSerializable(NoteListFragment.TYPE_ARG, mAdapter.getClickItem(getAdapterPosition()));
+            noteListFragment.setArguments(args);
+
             ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }

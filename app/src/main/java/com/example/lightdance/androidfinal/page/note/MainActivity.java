@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO 暂时只有一个fragment
+        //TODO 一次性创建所有Fragment，方便复用， 但全是bug
         fm = getSupportFragmentManager();
         typeListFragment = fm.findFragmentById(R.id.container);
         if (typeListFragment == null) {
