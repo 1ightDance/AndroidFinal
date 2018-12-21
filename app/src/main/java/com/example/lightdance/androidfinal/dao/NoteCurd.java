@@ -30,11 +30,11 @@ public class NoteCurd {
      */
     public long createNote(Note note) {
         ContentValues values = new ContentValues();
-        values.put(DataBase.NoteSchema.Field.CLASSIFY_ID, note.getClassifyId());
+        values.put(DataBase.NoteSchema.Field.TYPE_ID, note.getTypeId());
         values.put(DataBase.NoteSchema.Field.NOTE_TITLE, note.getTitle());
         values.put(DataBase.NoteSchema.Field.MODIFY_TIME, dateFormat.format(note.getModifyTime()));
         values.put(DataBase.NoteSchema.Field.LOCATION, note.getLocation());
-        values.put(DataBase.NoteSchema.Field.CONTEXT, note.getContext());
+        values.put(DataBase.NoteSchema.Field.CONTEXT, note.getContent());
         return database.insert(DataBase.NoteSchema.TABLE_NAME, null, values);
     }
 
@@ -47,11 +47,11 @@ public class NoteCurd {
     public boolean updateNote(Note note) {
         ContentValues values = new ContentValues();
         values.put(DataBase.NoteSchema.Field.ID, note.getId());
-        values.put(DataBase.NoteSchema.Field.CLASSIFY_ID, note.getClassifyId());
+        values.put(DataBase.NoteSchema.Field.TYPE_ID, note.getTypeId());
         values.put(DataBase.NoteSchema.Field.NOTE_TITLE, note.getTitle());
         values.put(DataBase.NoteSchema.Field.MODIFY_TIME, dateFormat.format(note.getModifyTime()));
         values.put(DataBase.NoteSchema.Field.LOCATION, note.getLocation());
-        values.put(DataBase.NoteSchema.Field.CONTEXT, note.getContext());
+        values.put(DataBase.NoteSchema.Field.CONTEXT, note.getContent());
         return 0 != database.update(DataBase.NoteSchema.TABLE_NAME, values, "id=?", new String[]{String.valueOf(note.getId())});
     }
 
@@ -63,16 +63,16 @@ public class NoteCurd {
     }
 
     /**
-     * @param classifyId
+     * @param typeId
      * @return
      */
-    public List<Note> findNoteByClassifyId(String classifyId) {
+    public List<Note> findNoteByTypeId(String typeId) {
         List<Note> notes = new ArrayList<>();
         Cursor cursor = database
                 .query(DataBase.NoteSchema.TABLE_NAME,
                         null,
-                        "classifyId=?",
-                        new String[]{classifyId},
+                        "typeId=?",
+                        new String[]{typeId},
                         null,
                         null,
                         null);

@@ -13,14 +13,14 @@ public class NoteWrapper extends CursorWrapper {
 
     public Note getNote() {
         String id = getString(getColumnIndex(DataBase.NoteSchema.Field.ID));
-        String classifyId = getString(getColumnIndex(DataBase.NoteSchema.Field.CLASSIFY_ID));
+        String typeId = getString(getColumnIndex(DataBase.NoteSchema.Field.TYPE_ID));
         String title = getString(getColumnIndex(DataBase.NoteSchema.Field.NOTE_TITLE));
         String modifyTime = getString(getColumnIndex(DataBase.NoteSchema.Field.MODIFY_TIME));
         String location = getString(getColumnIndex(DataBase.NoteSchema.Field.LOCATION));
         String context = getString(getColumnIndex(DataBase.NoteSchema.Field.CONTEXT));
         return Note.builder()
                 .id(Integer.valueOf(id))
-                .classifyId(Integer.valueOf(classifyId))
+                .typeId(Integer.valueOf(typeId))
                 .title(title)
                 .location(location)
                 .context(context)
