@@ -50,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
         typeListFragment = fm.findFragmentById(R.id.container);
         if (typeListFragment == null) {
             typeListFragment = TypeListFragment.newInstance();
-            fm.beginTransaction().add(R.id.container, typeListFragment, TypeListFragmentEnum.getName())
+            fm.beginTransaction()
+                    .add(R.id.container, typeListFragment, TypeListFragmentEnum.getName())
+                    .add(R.id.container, NoteListFragment.newInstance(), NoteListFragmentEnum.getName())
+                    .add(R.id.container, NoteFragment.newInstance(), NoteFragmentEnum.getName())
+                    .show(typeListFragment)
                     .commit();
         }
     }
@@ -147,10 +151,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         Fragment hide = fm.findFragmentByTag(targetHide.getName());
         transaction.hide(hide);
-        if (fm.findFragmentByTag(fragmentTypeEnum.getName()) == null) {
-            transaction.add(R.id.container, fragment, fragmentTypeEnum.getName());
-        }
         transaction.show(fragment);
         transaction.commit();
     }
+
+    public Fragment getFragment(FragmentTypeEnum fragmentTypeEnum) {
+        return fm.findFragmentByTag(fragmentTypeEnum.getName());
+    }
+
 }
