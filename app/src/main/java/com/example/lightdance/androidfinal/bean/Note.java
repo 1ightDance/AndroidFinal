@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Note implements Serializable {
 
+    public static final String NOTE = "NOTE";
+
     private int id;
     private int classifyId;
     private String title;
