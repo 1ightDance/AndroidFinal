@@ -2,6 +2,7 @@ package com.example.lightdance.androidfinal.page.note;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +31,7 @@ public class NoteListFragment extends Fragment {
 
     private Adapter mAdapter;
     private RecyclerView mRecyclerView;
+    private FloatingActionButton mFloatBtnAddNote;
 
     public static NoteListFragment newInstance(int typeId) {
         NoteListFragment fragment = new NoteListFragment();
@@ -53,7 +55,19 @@ public class NoteListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_note_list, container, false);
         mRecyclerView = v.findViewById(R.id.recycler_view_note_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mFloatBtnAddNote = v.findViewById(R.id.float_btn_add_new_note);
+        mFloatBtnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteFragmentEnum.getName());
+                ((MainActivity)getActivity()).switchFragment(targetFragment , FragmentTypeEnum.NoteFragmentEnum , FragmentTypeEnum.NoteListFragmentEnum);
+            }
+        });
+
         updateUI(getArguments().getString("typeId"));
+
         return v;
     }
 
