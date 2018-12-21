@@ -140,6 +140,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param fragment
+     * @param fragmentTypeEnum
+     * @param targetHide
+     */
     public void switchFragment(Fragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
         FragmentTransaction transaction = fm.beginTransaction();
         Fragment hide = fm.findFragmentByTag(targetHide.getName());
