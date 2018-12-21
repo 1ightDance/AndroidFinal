@@ -22,6 +22,8 @@ import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.util.List;
 
+import static com.example.lightdance.androidfinal.bean.Classify.TYPE;
+
 /**
  * @author LightDance
  * @update 2018/12/16 22:30
@@ -90,7 +92,10 @@ public class TypeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Fragment noteListFragment = NoteListFragment.newInstance(mAdapter.getClickItem(getAdapterPosition()).getId());
+            Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteFragmentEnum);
+            Bundle args = new Bundle();
+            args.putSerializable(TYPE, mAdapter.getClickItem(getAdapterPosition()));
+            noteListFragment.setArguments(args);
             ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }

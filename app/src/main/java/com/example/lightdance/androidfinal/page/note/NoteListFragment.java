@@ -12,10 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
+import com.example.lightdance.androidfinal.bean.Classify;
 import com.example.lightdance.androidfinal.bean.Note;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
 
 import java.util.List;
+
+import static com.example.lightdance.androidfinal.bean.Classify.TYPE;
 
 /**
  * @author LightDance
@@ -25,10 +28,9 @@ public class NoteListFragment extends Fragment {
     private Adapter mAdapter;
     private RecyclerView mRecyclerView;
 
-    public static NoteListFragment newInstance(int classifyId) {
+    public static NoteListFragment newInstance() {
         NoteListFragment fragment = new NoteListFragment();
         Bundle args = new Bundle();
-        args.putString("classifyId", String.valueOf(classifyId));
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,15 +49,15 @@ public class NoteListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_note_list, container, false);
         mRecyclerView = v.findViewById(R.id.recycler_view_note_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        updateUI(getArguments().getString("classifyId"));
+        updateUI((Classify) getArguments().getSerializable(TYPE));
         return v;
     }
 
-    private void updateUI(String classifyId) {
+    private void updateUI(Classify classify) {
 
         NoteCurd noteCurd = new NoteCurd(getActivity());
         //TODO set Id
-        List<Note> list = noteCurd.findNoteByClassifyId(classifyId);
+        List<Note> list = noteCurd.findNoteByClassifyId(String.valueOf(classify.getId()));
 
         if (mAdapter == null) {
             mAdapter = new Adapter(list);
