@@ -1,6 +1,10 @@
 package com.example.lightdance.androidfinal.bean;
 
-public class Type {
+import java.io.Serializable;
+
+public class Type implements Serializable {
+
+    public static final String TYPE = "TYPE";
 
     private int id;
     private String typeName;

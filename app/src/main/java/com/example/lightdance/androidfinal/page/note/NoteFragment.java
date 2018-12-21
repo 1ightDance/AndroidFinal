@@ -31,12 +31,8 @@ public class NoteFragment extends Fragment {
 
     public NoteFragment() {}
 
-    public static NoteFragment newInstance(Note note) {
-        NoteFragment fragment = new NoteFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("NOTE", note);
-        fragment.setArguments(args);
-        return fragment;
+    public static NoteFragment newInstance() {
+        return new NoteFragment();
     }
 
     @Override
@@ -51,7 +47,7 @@ public class NoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
         noteTitleEdit = view.findViewById(R.id.note_title);
         noteContextEdit = view.findViewById(R.id.note_context);
-        note = (Note) getArguments().get("NOTE");
+        note = (Note) getArguments().get(Note.NOTE);
         noteTitleEdit.setText(note.getTitle());
         noteContextEdit.setText(note.getContent());
         titleModify();

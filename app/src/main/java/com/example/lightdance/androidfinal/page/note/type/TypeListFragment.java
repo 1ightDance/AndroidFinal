@@ -89,7 +89,9 @@ public class TypeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Fragment noteListFragment = NoteListFragment.newInstance(mAdapter.getClickItem(getAdapterPosition()).getId());
+            Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteFragmentEnum);
+            Bundle args = new Bundle();
+            args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
             ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }

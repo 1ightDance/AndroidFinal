@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
+import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.TypeCurd;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
@@ -33,12 +34,8 @@ public class NoteListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private FloatingActionButton mFloatBtnAddNote;
 
-    public static NoteListFragment newInstance(int typeId) {
-        NoteListFragment fragment = new NoteListFragment();
-        Bundle args = new Bundle();
-        args.putString("typeId", String.valueOf(typeId));
-        fragment.setArguments(args);
-        return fragment;
+    public static NoteListFragment newInstance() {
+        return new NoteListFragment();
     }
 
     @Override
@@ -66,15 +63,15 @@ public class NoteListFragment extends Fragment {
             }
         });
 
-        updateUI(getArguments().getString("typeId"));
+        updateUI((Type) getArguments().getSerializable(Type.TYPE));
 
         return v;
     }
 
-    private void updateUI(String typeId) {
+    private void updateUI(Type type) {
 
         NoteCurd noteCurd = new NoteCurd(getActivity());
-        List<Note> list = noteCurd.findNoteByTypeId(typeId);
+        List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
 
         if (mAdapter == null) {
             mAdapter = new Adapter(list);
