@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
-import com.example.lightdance.androidfinal.bean.Classify;
-import com.example.lightdance.androidfinal.dao.ClassifyCurd;
+import com.example.lightdance.androidfinal.bean.Type;
+import com.example.lightdance.androidfinal.dao.TypeCurd;
 
 /**
  * file description
@@ -62,12 +62,12 @@ public class AddTypeDialog extends DialogFragment {
                         if ("".equals(typename.trim())){
                             textView.setVisibility(View.VISIBLE);
                         }else {
-                            ClassifyCurd classifyCurd = new ClassifyCurd(getActivity());
-                            Classify classify = Classify.builder()
+                            TypeCurd typeCurd = new TypeCurd(getActivity());
+                            Type type = Type.builder()
                                     .id((int)(Math.random()*100))
-                                    .classifyName(typename)
+                                    .typeName(typename)
                                     .build();
-                            classifyCurd.createClassify(classify);
+                            typeCurd.createType(type);
                             dialog.dismiss();
                             sendResult(Activity.RESULT_OK);
                         }

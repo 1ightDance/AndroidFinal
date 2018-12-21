@@ -21,7 +21,7 @@ public class DataBase extends SQLiteOpenHelper {
                 .append("(")
                 .append(NoteSchema.Field.ID)
                 .append(" integer primary key autoincrement,")
-                .append(NoteSchema.Field.CLASSIFY_ID)
+                .append(NoteSchema.Field.TYPE_ID)
                 .append(",")
                 .append(NoteSchema.Field.NOTE_TITLE)
                 .append(",")
@@ -31,16 +31,16 @@ public class DataBase extends SQLiteOpenHelper {
                 .append(",")
                 .append(NoteSchema.Field.CONTEXT)
                 .append(")");
-        StringBuilder createClassifySql = new StringBuilder();
-        createClassifySql.append("create table ")
-                .append(ClassifySchema.TABLE_NAME)
+        StringBuilder createTypeSql = new StringBuilder();
+        createTypeSql.append("create table ")
+                .append(TypeSchema.TABLE_NAME)
                 .append("(")
-                .append(ClassifySchema.Field.ID)
+                .append(TypeSchema.Field.ID)
                 .append(" integer primary key autoincrement,")
-                .append(ClassifySchema.Field.CLASSIFY_NAME)
+                .append(TypeSchema.Field.TYPE_NAME)
                 .append(")");
         sqLiteDatabase.execSQL(createNoteSql.toString());
-        sqLiteDatabase.execSQL(createClassifySql.toString());
+        sqLiteDatabase.execSQL(createTypeSql.toString());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class DataBase extends SQLiteOpenHelper {
 
         public static final class Field {
             public static final String ID = "id";
-            public static final String CLASSIFY_ID = "classifyId";
+            public static final String TYPE_ID = "typeId";
             public static final String NOTE_TITLE = "title";
             public static final String MODIFY_TIME = "modifyTime";
             public static final String LOCATION = "location";
@@ -61,12 +61,12 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    protected static final class ClassifySchema {
-        public static final String TABLE_NAME = "Classify";
+    protected static final class TypeSchema {
+        public static final String TABLE_NAME = "Type";
 
         public static final class Field {
             public static final String ID = "id";
-            public static final String CLASSIFY_NAME = "classifyName";
+            public static final String TYPE_NAME = "typeName";
         }
     }
 

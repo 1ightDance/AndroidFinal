@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lightdance.androidfinal.R;
-import com.example.lightdance.androidfinal.bean.Classify;
-import com.example.lightdance.androidfinal.dao.ClassifyCurd;
+import com.example.lightdance.androidfinal.bean.Type;
+import com.example.lightdance.androidfinal.dao.TypeCurd;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
 import com.example.lightdance.androidfinal.page.note.NoteListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
@@ -57,8 +56,8 @@ public class TypeListFragment extends Fragment {
     }
 
     private void updateUI(){
-        ClassifyCurd classifyCurd = new ClassifyCurd(getActivity());
-        List<Classify> list = classifyCurd.findAllClassify();
+        TypeCurd typeCurd = new TypeCurd(getActivity());
+        List<Type> list = typeCurd.findAllType();
 
         if (mAdapter == null){
             mAdapter = new Adapter(list);
@@ -75,7 +74,7 @@ public class TypeListFragment extends Fragment {
     private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTvClass;
-        private Classify mClassify;
+        private Type mType;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_type, parent, false));
@@ -83,9 +82,9 @@ public class TypeListFragment extends Fragment {
             itemView.setOnClickListener(this);
         }
 
-        void bind(Classify classify) {
-            mClassify = classify;
-            mTvClass.setText(mClassify.getClassifyName());
+        void bind(Type type) {
+            mType = type;
+            mTvClass.setText(mType.getTypeName());
         }
 
         @Override
@@ -99,9 +98,9 @@ public class TypeListFragment extends Fragment {
      * 适配器，Fragment实际上是通过适配器将数据转化成可见信息的
      */
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
-        private List<Classify> mList;
+        private List<Type> mList;
 
-        public Adapter(List<Classify> list) {
+        public Adapter(List<Type> list) {
             mList = list;
         }
 
@@ -114,8 +113,8 @@ public class TypeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Classify classify = mList.get(position);
-            holder.bind(classify);
+            Type type = mList.get(position);
+            holder.bind(type);
         }
 
         @Override
@@ -129,11 +128,11 @@ public class TypeListFragment extends Fragment {
          *
          * @param list 新的数据源
          */
-        public void setList(List<Classify> list) {
+        public void setList(List<Type> list) {
             mList = list;
         }
 
-        public Classify getClickItem(int position) {
+        public Type getClickItem(int position) {
             return mList.get(position);
         }
     }

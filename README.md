@@ -22,21 +22,21 @@ android class final teamwork
 > 创建笔记类别
 
 ```java
-createClassify(Classify classify)
+createClassify(Classify type)
 return type: long   返回创建的该类别的id
 ```
 
 > 更新笔记类别信息
 
 ```java
-updateClassify(Classify classify)
+updateClassify(Classify type)
 return type: boolean     更新成功与否标志
 ```
 
 > 删除某一个笔记类别
 
 ```java
-deleteClassify(int classifyId)
+deleteClassify(int typeId)
 return type: boolean     删除成功与否标志
 ```
 
@@ -73,7 +73,7 @@ return type: boolean     删除成功与否标志
 > 查询某个类别下的所有笔记
 
 ```java
-findNoteByClassifyId(String classifyId)
+findNoteByClassifyId(String typeId)
 return type: List<Note>     笔记列表
 ```
 

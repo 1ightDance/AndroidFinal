@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
             case "NoteFragment":
                 switchFragment(fm.findFragmentByTag(NoteListFragmentEnum.getName()), NoteListFragmentEnum, NoteFragmentEnum);
                 break;
+            default:
+                break;
         }
     }
 

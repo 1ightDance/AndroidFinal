@@ -27,15 +27,17 @@
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="type" />
-<ImageView
-    android:layout_width="20dp"
-    android:layout_height="20dp"
-    android:src="@drawable/icon_type"
-    android:scaleType="center"
-    android:padding="10dp"
-    app:layout_constraintTop_toTopOf="@id/tv_item_note_type"
-    app:layout_constraintBottom_toBottomOf="@id/tv_item_note_type"
-    app:layout_constraintEnd_toStartOf="@id/tv_item_note_type"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="10dp"
+            android:scaleType="center"
+            android:src="@drawable/icon_type"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_note_type"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_note_type"
+            app:layout_constraintTop_toTopOf="@id/tv_item_note_type" />
+
         <TextView
             android:id="@+id/tv_item_note_id"
             android:layout_width="wrap_content"
@@ -43,14 +45,15 @@
             android:padding="10dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="0031" />
+
         <TextView
             android:id="@+id/tv_item_note_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minLines="3"
             android:padding="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_note_id"
-            android:minLines="3"
             tools:text="今年下半年，中美合拍的西游记即将正式开机，我将继续扮演美猴王孙悟空，努力创造一个让海内外观众满意的，正能量的美猴王形象，文体两开花，弘扬中华文化，希望大家能多多关注" />
 
         <TextView

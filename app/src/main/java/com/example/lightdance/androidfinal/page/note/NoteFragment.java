@@ -9,9 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
@@ -55,7 +53,7 @@ public class NoteFragment extends Fragment {
         noteContextEdit = view.findViewById(R.id.note_context);
         note = (Note) getArguments().get("NOTE");
         noteTitleEdit.setText(note.getTitle());
-        noteContextEdit.setText(note.getContext());
+        noteContextEdit.setText(note.getContent());
         titleModify();
         contextModify();
         return view;
@@ -116,7 +114,7 @@ public class NoteFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                note.setContext(editable.toString());
+                note.setContent(editable.toString());
             }
         });
     }

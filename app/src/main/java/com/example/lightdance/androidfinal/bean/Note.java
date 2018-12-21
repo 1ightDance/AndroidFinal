@@ -6,18 +6,27 @@ import java.util.Date;
 public class Note implements Serializable {
 
     private int id;
-    private int classifyId;
+    private int typeId;
+    private String typeName;
     private String title;
     private Date modifyTime;
     private String location;
-    private String context;
+    private String content;
     private boolean isNew;
 
     public Note() {}
 
-    public Note(int id, int classifyId) {
+    public Note(int id, int typeId) {
         this.id = id;
-        this.classifyId = classifyId;
+        this.typeId = typeId;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public int getId() {
@@ -28,12 +37,12 @@ public class Note implements Serializable {
         this.id = id;
     }
 
-    public int getClassifyId() {
-        return classifyId;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setClassifyId(int classifyId) {
-        this.classifyId = classifyId;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getTitle() {
@@ -60,12 +69,12 @@ public class Note implements Serializable {
         this.location = location;
     }
 
-    public String getContext() {
-        return context;
+    public String getContent() {
+        return content;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public boolean isNew() {
@@ -80,11 +89,11 @@ public class Note implements Serializable {
     public String toString() {
         return "Note{" +
                 "id=" + id +
-                ", classifyId=" + classifyId +
+                ", typeId=" + typeId +
                 ", title='" + title + '\'' +
                 ", modifyTime=" + modifyTime +
                 ", location='" + location + '\'' +
-                ", context='" + context + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 
@@ -104,8 +113,8 @@ public class Note implements Serializable {
             return this;
         }
 
-        public Builder classifyId(int classifyId) {
-            this.note.classifyId = classifyId;
+        public Builder typeId(int typeId) {
+            this.note.typeId = typeId;
             return this;
         }
 
@@ -125,7 +134,7 @@ public class Note implements Serializable {
         }
 
         public Builder context(String context) {
-            this.note.context = context;
+            this.note.content = context;
             return this;
         }
 
