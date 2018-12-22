@@ -1,10 +1,7 @@
 package com.example.lightdance.androidfinal.page.note;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,10 +14,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
-import com.example.lightdance.androidfinal.bean.Note;
+import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.page.note.type.AddTypeDialog;
 import com.example.lightdance.androidfinal.page.note.type.TypeListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
+
+import java.util.List;
 
 import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteFragmentEnum;
 import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteListFragmentEnum;
@@ -33,7 +32,6 @@ import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.TypeLis
 public class MainActivity extends AppCompatActivity {
     private static String DIALOG_NEW_TYPE = "DIALOG_NEW_TYPE";
     public static final int REQUEST_NEW_TYPE = 0;
-    private static boolean isExit = false;
 
     Fragment typeListFragment;
     FragmentManager fm;
@@ -45,15 +43,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO 暂时只有一个fragment
+        //TODO 一次性创建所有Fragment，方便复用， 但全是bug
         fm = getSupportFragmentManager();
         typeListFragment = fm.findFragmentById(R.id.container);
         if (typeListFragment == null) {
             typeListFragment = TypeListFragment.newInstance();
+            NoteListFragment noteListFragment = NoteListFragment.newInstance();
+            NoteFragment noteFragment = NoteFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.container, typeListFragment, TypeListFragmentEnum.getName())
-                    .add(R.id.container, NoteListFragment.newInstance(), NoteListFragmentEnum.getName())
-                    .add(R.id.container, NoteFragment.newInstance(), NoteFragmentEnum.getName())
+                    .add(R.id.container, noteListFragment, NoteListFragmentEnum.getName())
+                    .add(R.id.container, noteFragment, NoteFragmentEnum.getName())
+                    .hide(noteListFragment)
+                    .hide(noteFragment)
                     .show(typeListFragment)
                     .commit();
         }
@@ -98,46 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        String currentFragment = TypeListFragment.class.getSimpleName();
-        for (Fragment fragment : fm.getFragments()) {
-            if (!fragment.isHidden() && fragment.isAdded()) {
-                currentFragment = fragment.getClass().getSimpleName();
+        List<Fragment> fragments = fm.getFragments();
+        for (Fragment fragment : fragments) {
+            BaseFragment baseFragment = (BaseFragment) fragment;
+            if (baseFragment.isAdded() && !baseFragment.isHidden()) {
+                baseFragment.onKeyBackPressed();
             }
-        }
-
-        Log.i("currentFragment : {}", currentFragment);
-
-        switch (currentFragment) {
-            case "TypeListFragment":
-                exit();
-                break;
-            case "NoteListFragment":
-                switchFragment(fm.findFragmentByTag(TypeListFragmentEnum.getName()), TypeListFragmentEnum, NoteListFragmentEnum);
-                break;
-            case "NoteFragment":
-                switchFragment(fm.findFragmentByTag(NoteListFragmentEnum.getName()), NoteListFragmentEnum, NoteFragmentEnum);
-                break;
-            default:
-                break;
-        }
-    }
-
-    @SuppressLint("HandlerLeak")
-    private static Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            isExit = false;
-        }
-    };
-
-    private void exit() {
-        if (!isExit) {
-            isExit = true;
-            Toast.makeText(this, "再按一次后退键退出程序", Toast.LENGTH_SHORT).show();
-            mHandler.sendEmptyMessageDelayed(0, 2000);
-        } else {
-            this.finish();
         }
     }
 

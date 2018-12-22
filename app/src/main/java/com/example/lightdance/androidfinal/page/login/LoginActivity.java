@@ -1,5 +1,6 @@
 package com.example.lightdance.androidfinal.page.login;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
+import com.example.lightdance.androidfinal.dao.DataBase;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
 
 import java.util.Date;
@@ -21,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        new DataBase(this);
         account = findViewById(R.id.account);
         password = findViewById(R.id.password);
         Button login = findViewById(R.id.login);
@@ -41,7 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 if ("hdu".equals(account.getText().toString()) && "hdu".equals(password.getText().toString())) {
-                    startActivity(MainActivity.getIntent(LoginActivity.this));
+                    Intent intent = MainActivity.getIntent(LoginActivity.this);
+                    intent.putExtra("load", true);
+                    startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(getApplication(), "账户密码错误", Toast.LENGTH_LONG).show();
