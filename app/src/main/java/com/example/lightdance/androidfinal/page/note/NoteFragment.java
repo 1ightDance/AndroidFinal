@@ -3,26 +3,32 @@ package com.example.lightdance.androidfinal.page.note;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
+import com.example.lightdance.androidfinal.page.BaseFragment;
+import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoteFragment extends Fragment {
+public class NoteFragment extends BaseFragment {
 
     private EditText noteTitleEdit;
     private EditText noteContextEdit;
@@ -32,7 +38,10 @@ public class NoteFragment extends Fragment {
     public NoteFragment() {}
 
     public static NoteFragment newInstance() {
-        return new NoteFragment();
+        NoteFragment fragment = new NoteFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -48,6 +57,10 @@ public class NoteFragment extends Fragment {
         noteTitleEdit = view.findViewById(R.id.note_title);
         noteContextEdit = view.findViewById(R.id.note_context);
         note = (Note) getArguments().get(Note.NOTE);
+        if (note == null) {
+            note = new Note();
+            note.setNew(true);
+        }
         noteTitleEdit.setText(note.getTitle());
         noteContextEdit.setText(note.getContent());
         titleModify();
@@ -56,25 +69,20 @@ public class NoteFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    note.setModifyTime(new Date());
-                    if (note.isNew()) {
-                        noteCurd.createNote(note);
-                    } else {
-                        noteCurd.updateNote(note);
-                    }
-                    return false;
-                }
-                return false;
-            }
-        });
+    public boolean onKeyBackPressed() {
+        note.setModifyTime(new Date());
+        note.setLocation("Null");
+        Log.i("Note save ", String.valueOf(note));
+        if (note.isNew()) {
+            noteCurd.createNote(note);
+        } else {
+            noteCurd.updateNote(note);
+        }
+        Log.i("here", "保存了？");
+        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
+        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);
+        return super.onKeyBackPressed();
     }
 
     private void titleModify() {

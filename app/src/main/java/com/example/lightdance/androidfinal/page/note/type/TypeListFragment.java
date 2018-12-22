@@ -1,20 +1,26 @@
 package com.example.lightdance.androidfinal.page.note.type;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.TypeCurd;
+import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
 import com.example.lightdance.androidfinal.page.note.NoteListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
@@ -25,7 +31,9 @@ import java.util.List;
  * @author LightDance
  * @update 2018/12/21 22:30
  */
-public class TypeListFragment extends Fragment {
+public class TypeListFragment extends BaseFragment {
+
+    private static boolean isExit = false;
 
     private Adapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -89,12 +97,11 @@ public class TypeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteFragmentEnum);
-            Bundle args = new Bundle();
-            //TODO 通过type id获取对应type？或者加在NoteListFragment中
+            Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteListFragmentEnum);
+            Bundle args = noteListFragment.getArguments();
+            args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
             args.putSerializable(NoteListFragment.TYPE_ARG, mAdapter.getClickItem(getAdapterPosition()));
             noteListFragment.setArguments(args);
-
             ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }
@@ -155,6 +162,31 @@ public class TypeListFragment extends Fragment {
             if (requestCode == MainActivity.REQUEST_NEW_TYPE) {
                 updateUI();
             }
+        }
+    }
+
+    @Override
+    public boolean onKeyBackPressed() {
+        exit();
+        return super.onKeyBackPressed();
+    }
+
+    @SuppressLint("HandlerLeak")
+    private static Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getActivity(), "再按一次后退键退出程序", Toast.LENGTH_SHORT).show();
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            (getActivity()).finish();
         }
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.lightdance.androidfinal.bean.Note;
 import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
 import com.example.lightdance.androidfinal.dao.TypeCurd;
+import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +29,7 @@ import java.util.Objects;
 /**
  * @author LightDance
  */
-public class NoteListFragment extends Fragment {
+public class NoteListFragment extends BaseFragment {
 
     //TODO 修改创建模式，兼容无type参数创建和有type参数创建两种方式
 
@@ -135,6 +137,7 @@ public class NoteListFragment extends Fragment {
         }
     }
 
+    // FIXME: 2018/12/22 当笔记存入后按返回键，应该刷新笔记列表
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -151,9 +154,7 @@ public class NoteListFragment extends Fragment {
                 ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
             }
         });
-
         updateUI(currentMode);
-
         return v;
     }
 
@@ -168,10 +169,8 @@ public class NoteListFragment extends Fragment {
                 //TODO 存在bug，目前args里面存的是type的id而非type类
                 TypeCurd typeCurd = new TypeCurd(getActivity());
                 List <Type> list = typeCurd.findAllType();
-
                 assert getArguments() != null;
                 Type type = list.get(getArguments().getInt(TYPE_ARG)) ;
-
                 updateUI(type);
                 break;
             case SEARCH_MODE:
@@ -193,7 +192,6 @@ public class NoteListFragment extends Fragment {
         //TODO 模糊搜索匹配标题&内容，甚至&时间，&地点
         //List<Note> contentMatchList = noteCurd.findNoteByContent(keyStr);
         //List<Note> list = titleMatchList.addAll(contentMatchList);
-
         if (mAdapter == null) {
             mAdapter = new Adapter(titleMatchList);
             mRecyclerView.setAdapter(mAdapter);
@@ -210,7 +208,6 @@ public class NoteListFragment extends Fragment {
     private void updateUI(Type type) {
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
-
         if (mAdapter == null) {
             mAdapter = new Adapter(list);
             mRecyclerView.setAdapter(mAdapter);
@@ -232,7 +229,7 @@ public class NoteListFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            return new ViewHolder(inflater, parent);
+            return new ViewHolder(inflater.inflate(R.layout.list_item_note, parent, false));
         }
 
         @Override
@@ -267,9 +264,8 @@ public class NoteListFragment extends Fragment {
 
         private Note mNote;
 
-        ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_type, parent, false));
-
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
             mTvId = itemView.findViewById(R.id.tv_item_note_id);
             mTvTitle = itemView.findViewById(R.id.tv_item_note_title);
             mTvClassName = itemView.findViewById(R.id.tv_item_note_type);
@@ -280,12 +276,12 @@ public class NoteListFragment extends Fragment {
 
         void bind(Note note) {
             mNote = note;
-            mTvId.setText(mNote.getId());
+            Log.i("Note Now", String.valueOf(note));
+            mTvId.setText(String.valueOf(mNote.getId()));
             mTvTitle.setText(mNote.getTitle());
             mTvClassName.setText(mNote.getTypeName());
             mTvContent.setText(mNote.getContent());
             mTvLocation.setText(mNote.getLocation());
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             mTvTime.setText(dateFormat.format(mNote.getModifyTime()));
         }
@@ -293,14 +289,20 @@ public class NoteListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-            Bundle args = new Bundle();
-            args.putSerializable(ARG_NOTE, mNote);
             Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteFragmentEnum.getName());
-
             assert targetFragment != null;
+            Bundle args = targetFragment.getArguments();
+            args.putSerializable(ARG_NOTE, mNote);
             targetFragment.setArguments(args);
             ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
         }
     }
 
+    @Override
+    public boolean onKeyBackPressed() {
+        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
+        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
+        return super.onKeyBackPressed();
+    }
 }
