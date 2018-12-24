@@ -78,7 +78,7 @@ public class NoteFragment extends BaseFragment {
         } else {
             noteCurd.updateNote(note);
         }
-        Log.i("here", "保存了？");
+        Toast.makeText(getActivity(), "已保存", Toast.LENGTH_LONG).show();
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);

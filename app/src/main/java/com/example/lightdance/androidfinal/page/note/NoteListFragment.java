@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.lightdance.androidfinal.page.note.NoteListFragment.CreateModeEnum.TYPE_MODE;
+
 /**
  * @author LightDance
  */
@@ -50,7 +52,7 @@ public class NoteListFragment extends BaseFragment {
         private int id;
         private String mode;
 
-        private CreateModeEnum(int id, String mode) {
+        CreateModeEnum(int id, String mode) {
             this.id = id;
             this.mode = mode;
         }
@@ -103,9 +105,9 @@ public class NoteListFragment extends BaseFragment {
         if (mode.getId() == CreateModeEnum.SEARCH_MODE.getId()) {
             //TODO 按照搜索模式进行处理
             args.putString(CURRENT_MODE, CreateModeEnum.SEARCH_MODE.getModeName());
-        } else if (mode.getId() == CreateModeEnum.TYPE_MODE.getId()) {
+        } else if (mode.getId() == TYPE_MODE.getId()) {
             //TODO 按照类别模式进行处理
-            args.putString(CURRENT_MODE, CreateModeEnum.TYPE_MODE.getModeName());
+            args.putString(CURRENT_MODE, TYPE_MODE.getModeName());
         }
         fragment.setArguments(args);
         return fragment;
@@ -131,8 +133,8 @@ public class NoteListFragment extends BaseFragment {
             String modeStr = getArguments().getString(CURRENT_MODE);
             if (modeStr.equals(CreateModeEnum.SEARCH_MODE.getModeName())){
                 currentMode = CreateModeEnum.SEARCH_MODE;
-            }else if(modeStr.equals(CreateModeEnum.TYPE_MODE.getModeName())){
-                currentMode = CreateModeEnum.TYPE_MODE;
+            }else if(modeStr.equals(TYPE_MODE.getModeName())){
+                currentMode = TYPE_MODE;
             }
         }
     }
@@ -303,6 +305,7 @@ public class NoteListFragment extends BaseFragment {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
+        updateUI(TYPE_MODE);
         return super.onKeyBackPressed();
     }
 }
