@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.TypeCurd;
 import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
-import com.example.lightdance.androidfinal.page.note.NoteListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.util.List;
@@ -99,8 +97,8 @@ public class TypeListFragment extends BaseFragment {
         public void onClick(View v) {
             Fragment noteListFragment = ((MainActivity) getActivity()).getFragment(FragmentTypeEnum.NoteListFragmentEnum);
             Bundle args = noteListFragment.getArguments();
+            args.putInt(Type.TYPE_POS, getAdapterPosition());
             args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
-            args.putSerializable(NoteListFragment.TYPE_ARG, mAdapter.getClickItem(getAdapterPosition()));
             noteListFragment.setArguments(args);
             ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }

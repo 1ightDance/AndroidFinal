@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Type implements Serializable {
 
+    public static final String TYPE_POS = "TYPE_POS";
     public static final String TYPE = "TYPE";
 
     private int id;

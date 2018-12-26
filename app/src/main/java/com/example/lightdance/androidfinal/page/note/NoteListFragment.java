@@ -1,5 +1,7 @@
 package com.example.lightdance.androidfinal.page.note;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.lightdance.androidfinal.page.note.NoteListFragment.CreateModeEnum.TYPE_MODE;
+import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteFragmentEnum;
 
 /**
  * @author LightDance
@@ -35,6 +38,7 @@ public class NoteListFragment extends BaseFragment {
 
     //TODO 修改创建模式，兼容无type参数创建和有type参数创建两种方式
 
+    // FIXME: 2018/12/26 两个一样的String？
     public static final String SEARCH_ARG = "SEARCH_ARG";
     public static final String TYPE_ARG = "SEARCH_ARG";
     private static final String CURRENT_MODE = "CURRENT_MODE";
@@ -151,15 +155,14 @@ public class NoteListFragment extends BaseFragment {
         mFloatBtnAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteFragmentEnum.getName());
-                ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
+                Type type = (Type) getArguments().getSerializable(Type.TYPE);
+                assert type != null;
+                createNote(Note.builder().typeId(type.getId()).isNew(true).builded());
             }
         });
         updateUI(currentMode);
         return v;
     }
-
 
     /**
      * updateUI方法，根据模式调用对应同名方法
@@ -168,11 +171,12 @@ public class NoteListFragment extends BaseFragment {
     private void updateUI(CreateModeEnum mode) {
         switch (mode) {
             case TYPE_MODE:
+                Log.i("进来了", String.valueOf(mode));
                 //TODO 存在bug，目前args里面存的是type的id而非type类
                 TypeCurd typeCurd = new TypeCurd(getActivity());
                 List <Type> list = typeCurd.findAllType();
                 assert getArguments() != null;
-                Type type = list.get(getArguments().getInt(TYPE_ARG)) ;
+                Type type = list.get(getArguments().getInt(Type.TYPE_POS)) ;
                 updateUI(type);
                 break;
             case SEARCH_MODE:
@@ -210,6 +214,7 @@ public class NoteListFragment extends BaseFragment {
     private void updateUI(Type type) {
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
+        Log.i("NoteList ", String.valueOf(list));
         if (mAdapter == null) {
             mAdapter = new Adapter(list);
             mRecyclerView.setAdapter(mAdapter);
@@ -255,8 +260,6 @@ public class NoteListFragment extends BaseFragment {
      */
     private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public static final String ARG_NOTE = "ARG_NOTE";
-
         private TextView mTvClassName;
         private TextView mTvTitle;
         private TextView mTvTime;
@@ -288,15 +291,21 @@ public class NoteListFragment extends BaseFragment {
             mTvTime.setText(dateFormat.format(mNote.getModifyTime()));
         }
 
+        // FIXME: 2018/12/26 点击事件无法触发
         @Override
         public void onClick(View view) {
-            FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-            Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteFragmentEnum.getName());
-            assert targetFragment != null;
-            Bundle args = targetFragment.getArguments();
-            args.putSerializable(ARG_NOTE, mNote);
-            targetFragment.setArguments(args);
-            ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
+            Log.i("点击", String.valueOf(1));
+            createNote(mNote);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == NoteFragmentEnum.getValue()) {
+                Log.i("here ", String.valueOf(requestCode));
+                updateUI(TYPE_MODE);
+            }
         }
     }
 
@@ -305,7 +314,17 @@ public class NoteListFragment extends BaseFragment {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
-        updateUI(TYPE_MODE);
         return super.onKeyBackPressed();
+    }
+
+    private void createNote(Note note) {
+        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        Fragment targetFragment = fm.findFragmentByTag(NoteFragmentEnum.getName());
+        assert targetFragment != null;
+        targetFragment.setTargetFragment(this, NoteFragmentEnum.getValue());
+        Bundle args = targetFragment.getArguments();
+        args.putSerializable(Note.NOTE, note);
+        targetFragment.setArguments(args);
+        ((MainActivity) getActivity()).switchFragment(targetFragment, NoteFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
     }
 }
