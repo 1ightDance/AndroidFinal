@@ -1,6 +1,8 @@
 package com.example.lightdance.androidfinal.page.note;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
+import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
 import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
@@ -56,6 +59,29 @@ public class NoteFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
         noteTitleEdit = view.findViewById(R.id.note_title);
         noteContextEdit = view.findViewById(R.id.note_context);
+        return view;
+    }
+
+    @Override
+    public boolean onKeyBackPressed() {
+        note.setModifyTime(new Date());
+        note.setLocation("Null");
+        if (note.isNew()) {
+            noteCurd.createNote(note);
+        } else {
+            noteCurd.updateNote(note);
+        }
+        sendResult(Activity.RESULT_OK);
+        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
+        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);
+        return true;
+    }
+
+    @Override
+    public void show() {
+        noteTitleEdit.setText("");
+        noteContextEdit.setText("");
         note = (Note) getArguments().get(Note.NOTE);
         if (note == null) {
             note = new Note();
@@ -65,36 +91,18 @@ public class NoteFragment extends BaseFragment {
         noteContextEdit.setText(note.getContent());
         titleModify();
         contextModify();
-        return view;
-    }
-
-    @Override
-    public boolean onKeyBackPressed() {
-        note.setModifyTime(new Date());
-        note.setLocation("Null");
-        Log.i("Note save ", String.valueOf(note));
-        if (note.isNew()) {
-            noteCurd.createNote(note);
-        } else {
-            noteCurd.updateNote(note);
-        }
-        Log.i("here", "保存了？");
-        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
-        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);
-        return super.onKeyBackPressed();
     }
 
     private void titleModify() {
         noteTitleEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                note.setTitle("无主题");
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                note.setTitle("无主题");
             }
 
             @Override
@@ -108,7 +116,7 @@ public class NoteFragment extends BaseFragment {
         noteContextEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                note.setContent("");
             }
 
             @Override
@@ -121,6 +129,15 @@ public class NoteFragment extends BaseFragment {
                 note.setContent(editable.toString());
             }
         });
+    }
+
+    @Deprecated
+    private void sendResult(int resultCode) {
+        if (getTargetFragment() == null) {
+            return;
+        }
+        Intent intent = new Intent();
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 
 }

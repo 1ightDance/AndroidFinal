@@ -28,13 +28,14 @@ public class NoteWrapper extends CursorWrapper {
         String context = getString(getColumnIndex(DataBase.NoteSchema.Field.CONTEXT));
         try {
              note = Note.builder()
-                    .id(Integer.valueOf(id))
-                    .typeId(Integer.valueOf(typeId))
-                    .title(title)
-                    .location(location)
-                    .modifyTime(dateFormat.parse(modifyTime))
-                    .context(context)
-                    .builded();
+                     .id(Integer.valueOf(id))
+                     .typeId(Integer.valueOf(typeId))
+                     .title(title)
+                     .location(location)
+                     .modifyTime(dateFormat.parse(modifyTime))
+                     .context(context)
+                     .isNew(false)
+                     .builded();
         } catch (ParseException e) {
             note = Note.builder()
                     .id(Integer.valueOf(id))
@@ -43,6 +44,7 @@ public class NoteWrapper extends CursorWrapper {
                     .location(location)
                     .modifyTime(new Date())
                     .context(context)
+                    .isNew(false)
                     .builded();
         }
         return note;

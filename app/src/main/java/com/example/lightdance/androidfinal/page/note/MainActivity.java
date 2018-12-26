@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -115,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
      * @param fragmentTypeEnum
      * @param targetHide
      */
-    public void switchFragment(Fragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
+    public void switchFragment(BaseFragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
         FragmentTransaction transaction = fm.beginTransaction();
         Fragment hide = fm.findFragmentByTag(targetHide.getName());
+        fragment.show();
         transaction.hide(hide);
         transaction.show(fragment);
         transaction.commit();

@@ -92,10 +92,12 @@ public class Note implements Serializable {
         return "Note{" +
                 "id=" + id +
                 ", typeId=" + typeId +
+                ", typeName='" + typeName + '\'' +
                 ", title='" + title + '\'' +
                 ", modifyTime=" + modifyTime +
                 ", location='" + location + '\'' +
                 ", content='" + content + '\'' +
+                ", isNew=" + isNew +
                 '}';
     }
 
@@ -137,6 +139,11 @@ public class Note implements Serializable {
 
         public Builder context(String context) {
             this.note.content = context;
+            return this;
+        }
+
+        public Builder isNew(boolean isNew) {
+            this.note.isNew = isNew;
             return this;
         }
 
