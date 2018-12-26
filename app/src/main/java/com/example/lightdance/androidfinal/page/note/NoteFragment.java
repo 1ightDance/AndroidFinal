@@ -59,7 +59,30 @@ public class NoteFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
         noteTitleEdit = view.findViewById(R.id.note_title);
         noteContextEdit = view.findViewById(R.id.note_context);
-        Log.i("编辑笔记", String.valueOf(0));
+        return view;
+    }
+
+    @Override
+    public boolean onKeyBackPressed() {
+        note.setModifyTime(new Date());
+        note.setLocation("Null");
+        if (note.isNew()) {
+            noteCurd.createNote(note);
+        } else {
+            noteCurd.updateNote(note);
+        }
+        sendResult(Activity.RESULT_OK);
+        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
+        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);
+        return super.onKeyBackPressed();
+    }
+
+    @Override
+    public void show() {
+        noteTitleEdit.setText("");
+        noteContextEdit.setText("");
+        note = (Note) getArguments().get(Note.NOTE);
         if (note == null) {
             note = new Note();
             note.setNew(true);
@@ -68,30 +91,6 @@ public class NoteFragment extends BaseFragment {
         noteContextEdit.setText(note.getContent());
         titleModify();
         contextModify();
-        return view;
-    }
-
-    @Override
-    public boolean onKeyBackPressed() {
-        Note tNote = (Note) getArguments().get(Note.NOTE);
-        note.setTypeId(tNote.getTypeId());
-        note.setModifyTime(new Date());
-        note.setLocation("Null");
-        Log.i("save ", String.valueOf(note));
-        noteTitleEdit.setText("");
-        noteContextEdit.setText("");
-        if (note.isNew()) {
-            noteCurd.createNote(note);
-        } else {
-            note.setId(tNote.getId());
-            noteCurd.updateNote(note);
-        }
-        sendResult(Activity.RESULT_OK);
-        Toast.makeText(getActivity(), "已保存", Toast.LENGTH_LONG).show();
-        FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.NoteListFragmentEnum.getName());
-        ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.NoteFragmentEnum);
-        return super.onKeyBackPressed();
     }
 
     private void titleModify() {
@@ -132,6 +131,7 @@ public class NoteFragment extends BaseFragment {
         });
     }
 
+    @Deprecated
     private void sendResult(int resultCode) {
         if (getTargetFragment() == null) {
             return;

@@ -114,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
      * @param fragmentTypeEnum
      * @param targetHide
      */
-    public void switchFragment(Fragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
+    public void switchFragment(BaseFragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
         FragmentTransaction transaction = fm.beginTransaction();
         Fragment hide = fm.findFragmentByTag(targetHide.getName());
+        fragment.show();
         transaction.hide(hide);
         transaction.show(fragment);
         transaction.commit();

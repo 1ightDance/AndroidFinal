@@ -133,14 +133,6 @@ public class NoteListFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String modeStr = getArguments().getString(CURRENT_MODE);
-            if (modeStr.equals(CreateModeEnum.SEARCH_MODE.getModeName())){
-                currentMode = CreateModeEnum.SEARCH_MODE;
-            }else if(modeStr.equals(TYPE_MODE.getModeName())){
-                currentMode = TYPE_MODE;
-            }
-        }
     }
 
     // FIXME: 2018/12/22 当笔记存入后按返回键，应该刷新笔记列表
@@ -152,15 +144,6 @@ public class NoteListFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mFloatBtnAddNote = v.findViewById(R.id.float_btn_add_new_note);
-        mFloatBtnAddNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Type type = (Type) getArguments().getSerializable(Type.TYPE);
-                assert type != null;
-                createNote(Note.builder().typeId(type.getId()).isNew(true).builded());
-            }
-        });
-        updateUI(currentMode);
         return v;
     }
 
@@ -277,6 +260,7 @@ public class NoteListFragment extends BaseFragment {
             mTvContent = itemView.findViewById(R.id.tv_item_note_content);
             mTvTime = itemView.findViewById(R.id.tv_item_note_time);
             mTvLocation = itemView.findViewById(R.id.tv_item_note_location);
+            itemView.setOnClickListener(this);
         }
 
         void bind(Note note) {
@@ -312,14 +296,35 @@ public class NoteListFragment extends BaseFragment {
     @Override
     public boolean onKeyBackPressed() {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        Fragment targetFragment = fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
+        BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
         return super.onKeyBackPressed();
     }
 
+    @Override
+    public void show() {
+        if (getArguments() != null) {
+            String modeStr = getArguments().getString(CURRENT_MODE);
+            if (modeStr.equals(CreateModeEnum.SEARCH_MODE.getModeName())){
+                currentMode = CreateModeEnum.SEARCH_MODE;
+            }else if(modeStr.equals(TYPE_MODE.getModeName())){
+                currentMode = TYPE_MODE;
+            }
+        }
+        mFloatBtnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Type type = (Type) getArguments().getSerializable(Type.TYPE);
+                assert type != null;
+                createNote(Note.builder().typeId(type.getId()).isNew(true).builded());
+            }
+        });
+        updateUI(currentMode);
+    }
+
     private void createNote(Note note) {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        Fragment targetFragment = fm.findFragmentByTag(NoteFragmentEnum.getName());
+        BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(NoteFragmentEnum.getName());
         assert targetFragment != null;
         targetFragment.setTargetFragment(this, NoteFragmentEnum.getValue());
         Bundle args = targetFragment.getArguments();

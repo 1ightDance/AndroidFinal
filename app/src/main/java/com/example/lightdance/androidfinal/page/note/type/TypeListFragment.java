@@ -100,7 +100,7 @@ public class TypeListFragment extends BaseFragment {
             args.putInt(Type.TYPE_POS, getAdapterPosition());
             args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
             noteListFragment.setArguments(args);
-            ((MainActivity) getActivity()).switchFragment(noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
+            ((MainActivity) getActivity()).switchFragment((BaseFragment) noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }
 
@@ -167,6 +167,11 @@ public class TypeListFragment extends BaseFragment {
     public boolean onKeyBackPressed() {
         exit();
         return super.onKeyBackPressed();
+    }
+
+    @Override
+    public void show() {
+
     }
 
     @SuppressLint("HandlerLeak")
