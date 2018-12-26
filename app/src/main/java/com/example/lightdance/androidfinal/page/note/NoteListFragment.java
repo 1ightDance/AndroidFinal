@@ -298,7 +298,7 @@ public class NoteListFragment extends BaseFragment {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
-        return super.onKeyBackPressed();
+        return true;
     }
 
     @Override

@@ -166,7 +166,7 @@ public class TypeListFragment extends BaseFragment {
     @Override
     public boolean onKeyBackPressed() {
         exit();
-        return super.onKeyBackPressed();
+        return true;
     }
 
     @Override
