@@ -6,26 +6,55 @@
     android:layout_height="match_parent"
     tools:content=".page.login.LoginActivity">
 
+    <ImageView
+        android:id="@+id/img_icon_login"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/login_btn"
+        android:src="@mipmap/login_icon"/>
     <EditText
         android:id="@+id/account"
-        android:hint="账户"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/img_icon_login"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:hint="@string/login_account"
+        />
 
     <EditText
         android:id="@+id/password"
-        android:hint="密码"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/account"
+        android:hint="@string/login_password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/account"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/login"
         android:textStyle="bold"
-        android:text="登录"
+        android:text="@string/login_btn"
+        android:textSize="20sp"
+        android:textColor="#F5F7FA"
+        android:background="#5D9CEC"
         app:layout_constraintTop_toBottomOf="@id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp" />
 
 </android.support.constraint.ConstraintLayout>

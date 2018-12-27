@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
@@ -136,7 +133,6 @@ public class NoteListFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-    // FIXME: 2018/12/22 当笔记存入后按返回键，应该刷新笔记列表
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -162,6 +158,7 @@ public class NoteListFragment extends BaseFragment {
                 updateUI(type);
                 break;
             case SEARCH_MODE:
+                assert getArguments() != null;
                 String keyStr = getArguments().getString(SEARCH_ARG);
                 updateUI(keyStr);
                 break;
@@ -195,7 +192,7 @@ public class NoteListFragment extends BaseFragment {
      * @param type 类型
      */
     private void updateUI(Type type) {
-        // FIXME: 2018/12/27
+
         mFloatBtnAddNote.setClickable(true);
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
@@ -212,7 +209,7 @@ public class NoteListFragment extends BaseFragment {
 
         private List<Note> mNoteList;
 
-        public Adapter(List<Note> items) {
+        Adapter(List<Note> items) {
             mNoteList = items;
         }
 
@@ -234,7 +231,7 @@ public class NoteListFragment extends BaseFragment {
             return mNoteList.size();
         }
 
-        public void setNoteList(List<Note> noteList) {
+        void setNoteList(List<Note> noteList) {
             mNoteList = noteList;
         }
     }
@@ -253,7 +250,7 @@ public class NoteListFragment extends BaseFragment {
 
         private Note mNote;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTvId = itemView.findViewById(R.id.tv_item_note_id);
             mTvTitle = itemView.findViewById(R.id.tv_item_note_title);

@@ -13,7 +13,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.page.BaseFragment;
@@ -23,6 +22,7 @@ import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 import com.idescout.sql.SqlScoutServer;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteFragmentEnum;
 import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteListFragmentEnum;
@@ -92,10 +92,11 @@ public class MainActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 args.putString(NoteListFragment.SEARCH_ARG , s);
                 //切换模式
+                assert fragment != null;
                 fragment.changeMode(NoteListFragment.CreateModeEnum.SEARCH_MODE , args);
                 switchFragment(fragment , FragmentTypeEnum.NoteListFragmentEnum , FragmentTypeEnum.TypeListFragmentEnum);
                 //提醒等待
-                Snackbar.make(getCurrentFocus() , "正在搜索..." , Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "正在搜索..." , Snackbar.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -119,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_add_new) {
-            Toast.makeText(this, "新增类别", Toast.LENGTH_SHORT).show();
             FragmentManager fm = getSupportFragmentManager();
             AddTypeDialog dialog = AddTypeDialog.newInstance();
             dialog.setTargetFragment(typeListFragment, REQUEST_NEW_TYPE);
@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      *
-     * @param fragment
-     * @param fragmentTypeEnum
-     * @param targetHide
+     * @param fragment 要切换到的fragment
+     * @param fragmentTypeEnum 貌似没鸟用
+     * @param targetHide 要设为不可见的fragment类型
      */
     public void switchFragment(BaseFragment fragment, FragmentTypeEnum fragmentTypeEnum, FragmentTypeEnum targetHide) {
         getSupportActionBar().hide();

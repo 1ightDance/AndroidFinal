@@ -22,4 +22,9 @@
     <string name="note_new_content">内容</string>
     <string name="note_new_content_hint">请在此输入内容</string>
     <string name="note_new_title_hint">请在此输入标题</string>
+    <string name="new_type_hint">请输入新增类别名</string>
+    <string name="login_account">账 户</string>
+    <string name="login_password">密 码</string>
+    <string name="login_btn">登 录</string>
+    <string name="tv_type">类 别</string>
 </resources>

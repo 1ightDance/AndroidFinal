@@ -29,11 +29,12 @@
             tools:text="type" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:padding="10dp"
             android:scaleType="center"
             android:src="@drawable/icon_type"
+            android:contentDescription="@string/tv_type"
             app:layout_constraintBottom_toBottomOf="@id/tv_item_note_type"
             app:layout_constraintEnd_toStartOf="@id/tv_item_note_type"
             app:layout_constraintTop_toTopOf="@id/tv_item_note_type" />
