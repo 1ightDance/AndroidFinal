@@ -155,7 +155,6 @@ public class NoteListFragment extends BaseFragment {
     private void updateUI(CreateModeEnum mode) {
         switch (mode) {
             case TYPE_MODE:
-                Log.i("进来了", String.valueOf(mode));
                 TypeCurd typeCurd = new TypeCurd(getActivity());
                 List <Type> list = typeCurd.findAllType();
                 assert getArguments() != null;
@@ -196,11 +195,10 @@ public class NoteListFragment extends BaseFragment {
      * @param type 类型
      */
     private void updateUI(Type type) {
-        //FIXME 查询不到数据
+        // FIXME: 2018/12/27
         mFloatBtnAddNote.setClickable(true);
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
-        Log.i("NoteList ", String.valueOf(list));
         if (mAdapter == null) {
             mAdapter = new Adapter(list);
             mRecyclerView.setAdapter(mAdapter);
@@ -268,7 +266,6 @@ public class NoteListFragment extends BaseFragment {
 
         void bind(Note note) {
             mNote = note;
-            Log.i("Note Now", String.valueOf(note));
             mTvId.setText(String.valueOf(mNote.getId()));
             mTvTitle.setText(mNote.getTitle());
             mTvClassName.setText(mNote.getTypeName());
@@ -280,7 +277,6 @@ public class NoteListFragment extends BaseFragment {
 
         @Override
         public void onClick(View view) {
-            Log.i("点击", String.valueOf(1));
             createNote(mNote);
         }
     }
@@ -289,7 +285,6 @@ public class NoteListFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == NoteFragmentEnum.getValue()) {
-                Log.i("here ", String.valueOf(requestCode));
                 updateUI(TYPE_MODE);
             }
         }
