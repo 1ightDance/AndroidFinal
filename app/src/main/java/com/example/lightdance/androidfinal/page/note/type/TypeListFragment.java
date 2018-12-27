@@ -21,6 +21,7 @@ import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.TypeCurd;
 import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.page.note.MainActivity;
+import com.example.lightdance.androidfinal.page.note.NoteListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
 
 import java.util.List;
@@ -99,7 +100,7 @@ public class TypeListFragment extends BaseFragment {
             Bundle args = noteListFragment.getArguments();
             args.putInt(Type.TYPE_POS, getAdapterPosition());
             args.putSerializable(Type.TYPE, mAdapter.getClickItem(getAdapterPosition()));
-            noteListFragment.setArguments(args);
+            ((NoteListFragment)noteListFragment).changeMode(NoteListFragment.CreateModeEnum.TYPE_MODE , args);
             ((MainActivity) getActivity()).switchFragment((BaseFragment) noteListFragment, FragmentTypeEnum.NoteListFragmentEnum, FragmentTypeEnum.TypeListFragmentEnum);
         }
     }

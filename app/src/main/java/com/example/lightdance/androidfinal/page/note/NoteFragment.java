@@ -8,17 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.lightdance.androidfinal.R;
 import com.example.lightdance.androidfinal.bean.Note;
-import com.example.lightdance.androidfinal.bean.Type;
 import com.example.lightdance.androidfinal.dao.NoteCurd;
 import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
@@ -57,7 +53,7 @@ public class NoteFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
-        noteTitleEdit = view.findViewById(R.id.note_title);
+        noteTitleEdit = view.findViewById(R.id.et_new_note_title);
         noteContextEdit = view.findViewById(R.id.note_context);
         return view;
     }
@@ -66,7 +62,7 @@ public class NoteFragment extends BaseFragment {
     public boolean onKeyBackPressed() {
         note.setModifyTime(new Date());
         note.setLocation("Null");
-        if (note.isNew()) {
+        if (note.isNew() &&("".equals(note.getTitle()) || "".equals(note.getContent()))) {
             noteCurd.createNote(note);
         } else {
             noteCurd.updateNote(note);

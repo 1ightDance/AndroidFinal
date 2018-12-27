@@ -32,15 +32,16 @@ import static com.example.lightdance.androidfinal.page.note.NoteListFragment.Cre
 import static com.example.lightdance.androidfinal.utils.FragmentTypeEnum.NoteFragmentEnum;
 
 /**
+ * 兼容type和search两种模式
+ *
  * @author LightDance
  */
 public class NoteListFragment extends BaseFragment {
 
-    //TODO 修改创建模式，兼容无type参数创建和有type参数创建两种方式
 
-    // FIXME: 2018/12/26 两个一样的String？
+
     public static final String SEARCH_ARG = "SEARCH_ARG";
-    public static final String TYPE_ARG = "SEARCH_ARG";
+    public static final String TYPE_ARG = "TYPE_ARG";
     private static final String CURRENT_MODE = "CURRENT_MODE";
 
     public enum CreateModeEnum {
@@ -107,10 +108,10 @@ public class NoteListFragment extends BaseFragment {
     public static NoteListFragment newInstance(Bundle args, CreateModeEnum mode) {
         NoteListFragment fragment = new NoteListFragment();
         if (mode.getId() == CreateModeEnum.SEARCH_MODE.getId()) {
-            //TODO 按照搜索模式进行处理
+            //按照搜索模式进行处理
             args.putString(CURRENT_MODE, CreateModeEnum.SEARCH_MODE.getModeName());
         } else if (mode.getId() == TYPE_MODE.getId()) {
-            //TODO 按照类别模式进行处理
+            //按照类别模式进行处理
             args.putString(CURRENT_MODE, TYPE_MODE.getModeName());
         }
         fragment.setArguments(args);
@@ -127,7 +128,7 @@ public class NoteListFragment extends BaseFragment {
         args.putString(CURRENT_MODE , targetMode.getModeName());
         setArguments(args);
         currentMode = targetMode;
-        updateUI(targetMode);
+//        updateUI(targetMode);
     }
 
     @Override
@@ -155,7 +156,6 @@ public class NoteListFragment extends BaseFragment {
         switch (mode) {
             case TYPE_MODE:
                 Log.i("进来了", String.valueOf(mode));
-                //TODO 存在bug，目前args里面存的是type的id而非type类
                 TypeCurd typeCurd = new TypeCurd(getActivity());
                 List <Type> list = typeCurd.findAllType();
                 assert getArguments() != null;
@@ -176,6 +176,7 @@ public class NoteListFragment extends BaseFragment {
      * @param keyStr 关键字
      */
     private void updateUI(String keyStr) {
+        mFloatBtnAddNote.setClickable(false);
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> titleMatchList = noteCurd.findNoteByTitle(keyStr);
         //TODO 模糊搜索匹配标题&内容，甚至&时间，&地点
@@ -195,6 +196,8 @@ public class NoteListFragment extends BaseFragment {
      * @param type 类型
      */
     private void updateUI(Type type) {
+        //FIXME 查询不到数据
+        mFloatBtnAddNote.setClickable(true);
         NoteCurd noteCurd = new NoteCurd(getActivity());
         List<Note> list = noteCurd.findNoteByTypeId(String.valueOf(type.getId()));
         Log.i("NoteList ", String.valueOf(list));
@@ -275,7 +278,6 @@ public class NoteListFragment extends BaseFragment {
             mTvTime.setText(dateFormat.format(mNote.getModifyTime()));
         }
 
-        // FIXME: 2018/12/26 点击事件无法触发
         @Override
         public void onClick(View view) {
             Log.i("点击", String.valueOf(1));
@@ -298,6 +300,8 @@ public class NoteListFragment extends BaseFragment {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         BaseFragment targetFragment = (BaseFragment) fm.findFragmentByTag(FragmentTypeEnum.TypeListFragmentEnum.getName());
         ((MainActivity) getActivity()).switchFragment(targetFragment, FragmentTypeEnum.TypeListFragmentEnum, FragmentTypeEnum.NoteListFragmentEnum);
+        //回退前显示actionBar
+        ((MainActivity)getActivity()).getSupportActionBar().show();
         return true;
     }
 

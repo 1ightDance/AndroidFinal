@@ -16,6 +16,10 @@
 
     <string name="menu_add_type">add new type</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_search_title">search</string>
+    <string name="note_new_title">笔记标题</string>
+    <string name="note_new_content">内容</string>
+    <string name="note_new_content_hint">请在此输入内容</string>
+    <string name="note_new_title_hint">请在此输入标题</string>
 </resources>
