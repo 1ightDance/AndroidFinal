@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,8 @@ public class NoteFragment extends BaseFragment {
     public boolean onKeyBackPressed() {
         note.setModifyTime(new Date());
         note.setLocation("Null");
-        if (note.isNew() &&("".equals(note.getTitle()) || "".equals(note.getContent()))) {
-            noteCurd.createNote(note);
+        if (note.isNew()) {
+            Log.i("note——id ", String.valueOf(noteCurd.createNote(note)));
         } else {
             noteCurd.updateNote(note);
         }

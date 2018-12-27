@@ -20,6 +20,7 @@ import com.example.lightdance.androidfinal.page.BaseFragment;
 import com.example.lightdance.androidfinal.page.note.type.AddTypeDialog;
 import com.example.lightdance.androidfinal.page.note.type.TypeListFragment;
 import com.example.lightdance.androidfinal.utils.FragmentTypeEnum;
+import com.idescout.sql.SqlScoutServer;
 
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SqlScoutServer.create(this, getPackageName());
 
         fm = getSupportFragmentManager();
         typeListFragment = fm.findFragmentById(R.id.container);

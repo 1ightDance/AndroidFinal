@@ -68,14 +68,8 @@ public class NoteCurd {
      */
     public List<Note> findNoteByTypeId(String typeId) {
         List<Note> notes = new ArrayList<>();
-        Cursor cursor = database
-                .query(DataBase.NoteSchema.TABLE_NAME,
-                        null,
-                        "typeId=?",
-                        new String[]{typeId},
-                        null,
-                        null,
-                        null);
+        String sql = "select * from Note where typeId=" + typeId;
+        Cursor cursor = database.rawQuery(sql, null, null);
         NoteWrapper noteWrapper = new NoteWrapper(cursor);
         noteWrapper.moveToFirst();
         while (!noteWrapper.isAfterLast()) {
